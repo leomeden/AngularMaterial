@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { getMatIconNameNotFoundError } from '@angular/material/icon';
 import { Observable } from 'rxjs';
 import { Menu } from '../interfaces/menu';
 
