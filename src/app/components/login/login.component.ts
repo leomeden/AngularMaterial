@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
     }*/
 
     this._authService.SignIn(usuario, password)
-
+    //this._authService.SignUp(usuario, password)
 
   }
 
