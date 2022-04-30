@@ -9,11 +9,13 @@ import { FireAuthModule } from './components/shared/fire-auth/fire-auth.module';
 
 // Componentes
 import { LoginComponent } from './components/login/login.component';
+import { RegistrarseComponent } from './components/login/registrarse/registrarse.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    RegistrarseComponent
   ],
   imports: [
     BrowserModule,

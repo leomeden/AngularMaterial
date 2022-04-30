@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
                private router: Router,
                private _authService: AuthService){
     this.form = this.fb.group({
-      usuario: ['', Validators.required],
+      mail: ['', Validators.required],
       password: ['', Validators.required]
     })
   }
@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
 
   ingresar(){
     console.log(this.form);
-    const usuario = this.form.value.usuario;
+    const mail = this.form.value.mail;
     const password = this.form.value.password;
 
     /*if(usuario == 'lmeden' && password == 'admin123') {
@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
       this.form.reset();
     }*/
 
-    this._authService.SignIn(usuario, password)
+    this._authService.SignIn(mail, password)
     //this._authService.SignUp(usuario, password)
 
   }
