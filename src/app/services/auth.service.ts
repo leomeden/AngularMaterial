@@ -1,6 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { UserAuth } from '../interfaces/user-auth';
+import { UserDetail } from 'src/app/interfaces/user-detail';
 import {
   AngularFirestore,
   AngularFirestoreDocument,
@@ -49,20 +50,54 @@ export class AuthService {
   }
 
   // Sign up with email/password
-  SignUp(email: string, password: string) {
+
+  SignUp(userDetail: UserDetail): Promise<any> {
     return this.afAuth
+      .createUserWithEmailAndPassword(userDetail.email, userDetail.password)
+      /*.then((result) => {
+        // Call the SendVerificaitonMail() function when new user sign 
+        //up and returns promise 
+        //this.SendVerificationMail();
+        //this.SetUserData(result.user);
+        console.log("usuario creado: ", result.user);
+
+        console.log("uid de usuario creado", result.user?.uid)
+
+        this.ngZone.run(() => {
+          this.router.navigate(['']);
+        });
+        //this.SetUserData(result.user);
+        //return result.user?.uid || null
+
+      })
+      .catch((error) => {
+        window.alert(error.message);
+      });*/
+  }
+
+
+  /*SignUp(email: string, password: string): any {
+    this.afAuth
       .createUserWithEmailAndPassword(email, password)
       .then((result) => {
-        /* Call the SendVerificaitonMail() function when new user sign 
-        up and returns promise */
-        this.SendVerificationMail();
-        this.SetUserData(result.user);
+        // Call the SendVerificaitonMail() function when new user sign 
+        //up and returns promise 
+        //this.SendVerificationMail();
+        //this.SetUserData(result.user);
         console.log("usuario creado: ", result.user);
+
+        console.log("uid de usuario creado", result.user?.uid)
+
+        this.ngZone.run(() => {
+          this.router.navigate(['']);
+        });
+        //this.SetUserData(result.user);
+
       })
       .catch((error) => {
         window.alert(error.message);
       });
-  }
+  }*/
 
   // Send email verfificaiton when new user sign up
   SendVerificationMail() {
@@ -106,6 +141,24 @@ export class AuthService {
       emailVerified: user.emailVerified,
     };
     return userRef.set(userData, {
+      merge: true,
+    });
+  }
+
+  UpdateUserData(user: UserDetail) {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(
+      `users/${user.uid}`
+    );
+    const userDetail: UserDetail = {
+      uid: user.uid,
+      nombre: user.nombre,
+      apellido: user.apellido,
+      direccion: user.direccion,
+      telefono: user.telefono,
+      email: user.email,
+      password: user.password
+    };
+    return userRef.set(userDetail, {
       merge: true,
     });
   }
