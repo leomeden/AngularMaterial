@@ -5,5 +5,4 @@ export interface UserDetail {
     telefono: string;
     direccion: string;
     email: string;
-    password: string;
  }

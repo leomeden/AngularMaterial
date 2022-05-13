@@ -51,10 +51,10 @@ export class AuthService {
 
   // Sign up with email/password
 
-  SignUp(userDetail: UserDetail): Promise<any> {
-    return this.afAuth
-      .createUserWithEmailAndPassword(userDetail.email, userDetail.password)
-      /*.then((result) => {
+  SignUp(userDetail: UserDetail, pass: string) {
+    this.afAuth
+      .createUserWithEmailAndPassword(userDetail.email, pass)
+      .then((result) => {
         // Call the SendVerificaitonMail() function when new user sign 
         //up and returns promise 
         //this.SendVerificationMail();
@@ -62,6 +62,11 @@ export class AuthService {
         console.log("usuario creado: ", result.user);
 
         console.log("uid de usuario creado", result.user?.uid)
+
+        if (result.user?.uid) {
+          userDetail.uid = result.user?.uid;
+          this.UpdateUserData(userDetail);
+        }
 
         this.ngZone.run(() => {
           this.router.navigate(['']);
@@ -72,7 +77,7 @@ export class AuthService {
       })
       .catch((error) => {
         window.alert(error.message);
-      });*/
+      });
   }
 
 
@@ -149,16 +154,7 @@ export class AuthService {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(
       `users/${user.uid}`
     );
-    const userDetail: UserDetail = {
-      uid: user.uid,
-      nombre: user.nombre,
-      apellido: user.apellido,
-      direccion: user.direccion,
-      telefono: user.telefono,
-      email: user.email,
-      password: user.password
-    };
-    return userRef.set(userDetail, {
+    return userRef.set(user, {
       merge: true,
     });
   }
